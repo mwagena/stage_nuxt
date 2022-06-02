@@ -25,7 +25,7 @@ Route::get('login',[LoginController::class, 'showLoginPage']);
 
 Route::post('login', [ 'as' => 'login', 'uses' => 'LoginController@do']);
 
-Route::post('/done', [TaskController::class, 'complete']);
+Route::post('/done', [TaskController::class, 'toggleComplete']);
 
 Route::post('/new', [TaskController::class, 'create']);
 
