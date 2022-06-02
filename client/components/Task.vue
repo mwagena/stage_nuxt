@@ -4,7 +4,6 @@
       <input @change="$emit('toggleComplete', task.id)" type="checkbox">
       <div class="px-4">
         {{ task.title }}
-        <font-awesome-icon icon="fa-solid fa-pen-to-square" />
       </div>
     </div>
   </div>
