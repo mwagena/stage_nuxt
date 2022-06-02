@@ -24,10 +24,11 @@ class TaskController
 
         return Task::all();
     }
-    public static function complete(Request $request)
+    public static function toggleComplete(Request $request)
     {
         $task = Task::find($request->id);
-        $task->done = 1;
+
+        $task->done = !$task->done;
         $task->save();
         return response('success', 200)
             ->header('Content-type', 'application/json');
