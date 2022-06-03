@@ -9,11 +9,12 @@ class TaskController
 {
     public function create(Request $request)
     {
-        $task = new Task;
-
-        $task->title = $request->title;
-        $task->description = $request->description;
-        $task->thumbnail = $request->thumbnail;
+        return $request;
+//        $task = new Task;
+//
+//        $task->title = $request->title;
+//        $task->description = $request->description;
+//        $task->thumbnail = $request->thumbnail;
 
         $task->save();
     }

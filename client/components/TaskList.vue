@@ -9,7 +9,7 @@
 
 <style lang="scss" scoped>
 .task-section-container {
-
+  width: 100%;
 }
 </style>
 

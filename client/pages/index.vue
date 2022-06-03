@@ -1,10 +1,13 @@
 <template>
   <b-container fluid="md">
-  <b-row>
+  <b-row class="d-flex justify-content-center">
     <h1>Test</h1>
   </b-row>
   <b-row>
-    <TaskSection />
+    <b-col class="col-md-8 offset-md-2">
+      <TaskSection />
+    </b-col>
+
   </b-row>
 
 
