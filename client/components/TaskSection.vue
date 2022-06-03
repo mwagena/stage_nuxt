@@ -1,5 +1,8 @@
 <template>
   <div class="task-section-container">
+    <div class="my-3">
+      <NewTask/>
+    </div>
    <TaskList title="All tasks" :tasks=allTasks />
     <TaskList title="Completed tasks" :tasks=completedTasks />
   </div>
@@ -7,7 +10,7 @@
 
 <style lang="scss" scoped>
   .task-section-container {
-
+  width: 100%;
   }
 </style>
 
