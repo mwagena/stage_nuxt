@@ -4,19 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TaskController
 {
     public function create(Request $request)
     {
-        return $request;
-//        $task = new Task;
-//
-//        $task->title = $request->title;
-//        $task->description = $request->description;
-//        $task->thumbnail = $request->thumbnail;
+        $request->validate([
+           'title' => 'required',
+           'description' => 'required',
+           'file' => 'required',
+            'thumbnail' => 'required'
+        ]);
+
+        $task = new Task;
+
+        $task->title = $request->title;
+        $task->description = $request->description;
+
+        $imgUrl = Storage::disk('local')->put('/public/images', $request->file);
+        $imgName = basename($imgUrl);
+        $task->thumbnail = $imgName;
 
         $task->save();
+
+        return response($task, 200)
+            ->header('Content-type', 'application/json');
     }
     public function getAll(Request $request)
     {

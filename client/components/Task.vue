@@ -8,12 +8,16 @@
       <button @click="toggleMoreInfo" class="btn btn-primary">Show more info</button>
     </div>
     <div v-if="showMore" class="d-flex align-items-center justify-content-between py-3">
-      <nuxt-img :src="/images/ + task.thumbnail" width="300" height="169"/>
+      <nuxt-img :src="imgPreUrl + task.thumbnail" width="300" height="169"/>
+
       <p>{{task.description}}</p>
       <div>
-        <button class="btn btn-primary">Edit</button>
+        <button @click="editing = !editing" class="btn btn-primary">{{ editing ? 'Stop editing' : 'Edit' }}</button>
         <button class="btn btn-danger">Delete</button>
       </div>
+    </div>
+    <div v-if="editing">
+      <TaskForm :task="task" :editing="editing" />
     </div>
   </div>
 </template>
@@ -36,7 +40,9 @@ export default {
   },
   data() {
     return {
-      showMore: false
+      showMore: false,
+      editing: false,
+      imgPreUrl: 'http://localhost/storage/images/'
     }
   },
   methods: {

@@ -18,12 +18,22 @@ export default {
   props: {
   },
   methods: {
-    async addTask (title, description, thumbnail) {
-      event.preventDefault();
-      // this.$store.commit('tasks/setTaskDone', id)
-      await this.$axios.$post('http://localhost/api/new', {title: title, description: description, thumbnail: thumbnail} )
-        .then(function (response) {
+    async addTask (data) {
+
+      let formData = new FormData();
+      formData.append('title', data.title)
+      formData.append('description', data.description)
+      formData.append('file', data.file)
+      formData.append('thumbnail', data.file.name)
+      console.log(formData)
+      await this.$axios.$post('http://localhost/api/new', formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        },
+      } )
+        .then((response) => {
           console.log(response);
+          this.$store.commit('tasks/addTasks', response)
         })
         .catch(function (error) {
           console.log(error);
