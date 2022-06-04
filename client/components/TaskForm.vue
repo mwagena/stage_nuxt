@@ -1,6 +1,6 @@
 <template>
   <div class="task-form-container">
-    <b-form @submit="$emit('addTask', ...form)" @reset="onReset" v-if="show">
+    <b-form @submit="onSubmit" @reset="onReset" v-if="show" enctype="multipart/form-data">
       <b-form-group
         id="input-group-1"
         label="Task title:"
@@ -25,7 +25,7 @@
         ></b-form-textarea>
       </b-form-group>
 
-      <b-form-group id="input-group-3" label="Food:" label-for="input-3">
+      <b-form-group id="input-group-3" label="Thumbnail:" label-for="input-3">
         <b-form-file
           v-model="form.file"
           :state="Boolean(form.file)"
@@ -34,7 +34,7 @@
         ></b-form-file>
         <div class="mt-3">Selected file: {{ form.file ? form.file.name : '' }}</div>
       </b-form-group>
-
+      {{ task }}
       <b-button type="submit" variant="primary">Submit</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
@@ -51,6 +51,8 @@
 <script>
 export default {
   name: 'TaskForm',
+  props: ['task', 'editing'
+  ],
   data() {
     return {
       form: {
@@ -62,6 +64,19 @@ export default {
     }
   },
   methods: {
+    onSubmit(event) {
+      event.preventDefault()
+
+      console.log(this.form.title)
+
+      let formData = {
+        title: this.form.title,
+        description: this.form.description,
+        file: this.form.file
+      }
+
+      this.$emit('addTask', formData)
+    },
     onReset(event) {
       event.preventDefault()
       // Reset our form values

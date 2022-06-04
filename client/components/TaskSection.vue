@@ -28,7 +28,6 @@ export default {
     ).then(res => res.json())
     .then(res => {
       res.forEach(task =>  this.$store.commit('tasks/addTasks', task))
-
     })
   },
   computed: {
@@ -37,7 +36,7 @@ export default {
     },
     allTasks() {
       return this.$store.getters["tasks/getAllTasks"]
-    }
+    },
   }
 }
 </script>

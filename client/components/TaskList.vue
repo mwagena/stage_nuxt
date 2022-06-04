@@ -2,7 +2,7 @@
   <div class="task-list-container">
     <h3>{{ title }}</h3>
     <div v-for="task in tasks">
-      <Task @toggleComplete="completeTask" :task="task"/>
+      <Task class="my-3" @toggleComplete="completeTask" :task="task"/>
     </div>
   </div>
 </template>
