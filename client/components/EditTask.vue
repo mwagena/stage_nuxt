@@ -52,7 +52,7 @@ export default {
         }
       }
 
-      await this.$axios.$post('http://localhost/api/edit', formData, {
+      await this.$axios.$post(`${process.env.BASE_URL}/edit`, formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         },
