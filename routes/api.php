@@ -29,4 +29,8 @@ Route::post('/done', [TaskController::class, 'toggleComplete']);
 
 Route::post('/new', [TaskController::class, 'create']);
 
+Route::post('/delete', [TaskController::class, 'delete']);
+
+Route::post('/edit', [TaskController::class, 'edit']);
+
 Route::get('/', [TaskController::class, 'getAll']);

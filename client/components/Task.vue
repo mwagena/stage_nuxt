@@ -12,12 +12,9 @@
 
       <p>{{task.description}}</p>
       <div>
-        <button @click="editing = !editing" class="btn btn-primary">{{ editing ? 'Stop editing' : 'Edit' }}</button>
-        <button class="btn btn-danger">Delete</button>
+        <b-button variant="primary" @click="$emit('editTask', task)" >{{ editing ? 'Stop editing' : 'Edit' }}</b-button>
+        <b-button variant="danger" @click="alertMe" v-b-modal.modal-1>Delete</b-button>
       </div>
-    </div>
-    <div v-if="editing">
-      <TaskForm :task="task" :editing="editing" />
     </div>
   </div>
 </template>
@@ -46,6 +43,14 @@ export default {
     }
   },
   methods: {
+    alertMe() {
+      if (confirm("Are you sure you want to delete this task?")) {
+        this.$emit('delete', this.task)
+      } else {
+        console.log('nope')
+      }
+
+    },
     toggleMoreInfo() {
       this.showMore = !this.showMore;
     }

@@ -1,11 +1,8 @@
 <template>
   <div class="new-task-container d-flex flex-column align-items-center p-3">
-    <h2>Here you can add a new task</h2>
-    <div class="mt-4" v-if="$store.state.tasks.mode !== 'new'">
-      <button @click="$store.commit('tasks/setMode', 'new')" class="btn btn-primary">Add task</button>
-    </div>
-    <div class="w-100" v-if="$store.state.tasks.mode === 'new'">
-      <NewTaskForm @cancel="$store.commit('tasks/setMode', 'default')" @sendFormData="addTask"/>
+    <h2>Edit Task: {{ task.title }}</h2>
+    <div class="w-100 p-4">
+      <EditTaskForm :task="task" @cancel="cancelNewTask" @sendFormData="editTask"/>
     </div>
   </div>
 </template>
@@ -22,6 +19,9 @@
 export default {
   name: 'NewTask',
   props: {
+    task: {
+      type: Object,
+    }
   },
   data() {
     return {
@@ -35,23 +35,32 @@ export default {
     cancelNewTask() {
       this.toggleNewTask = false
     },
-    async addTask (data) {
+    async editTask (data) {
+      console.log(data)
 
       let formData = new FormData();
+
+      formData.append('id', data.id)
       formData.append('title', data.title)
       formData.append('description', data.description)
-      formData.append('file', data.file)
-      formData.append('thumbnail', data.file.name)
-      console.log(formData)
-      await this.$axios.$post('http://localhost/api/new', formData, {
+
+      if (data.file || data.file !== null) {
+
+        if(data.file.name !== this.task.thumbnail && data.file && data.file !== this.task.thumbnail) {
+          formData.append('file', data.file)
+          formData.append('thumbnail', data.file.name)
+        }
+      }
+
+      await this.$axios.$post('http://localhost/api/edit', formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         },
       } )
         .then((response) => {
           console.log(response);
-          this.$store.commit('tasks/addTasks', response)
-          this.$emit('taskAdded', 'added')
+          this.$store.commit('tasks/clearEditedTask', response)
+          this.$emit('taskEdited', 'edited')
         })
         .catch(function (error) {
           console.log(error);

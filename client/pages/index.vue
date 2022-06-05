@@ -4,10 +4,9 @@
     <h1>Test</h1>
   </b-row>
   <b-row>
-    <b-col class="col-md-8 offset-md-2">
+    <b-col class="col-md-8 offset-md-2 my-5">
       <TaskSection />
     </b-col>
-
   </b-row>
 
 
