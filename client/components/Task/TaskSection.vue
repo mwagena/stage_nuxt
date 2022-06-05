@@ -31,8 +31,8 @@ export default {
   },
   async fetch() {
     this.tasks = await fetch(
-      'http://localhost/api'
-    ).then(res => res.json())
+      process.env.BASE_URL)
+      .then(res => res.json())
     .then(res => {
       res.forEach(task =>  this.$store.commit('tasks/addTasks', task))
     })
@@ -53,4 +53,3 @@ export default {
   }
 }
 </script>
-<!--this.$store.commit('Task/addTasks', this.res.json())-->

@@ -42,9 +42,6 @@ class TaskController
 
     public function getAll(Request $request)
     {
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Headers: Authorization');
-
         return Task::all();
     }
 
