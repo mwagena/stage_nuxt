@@ -1,7 +1,7 @@
 <template>
   <div class="new-task-container d-flex flex-column align-items-center p-3">
-    <h2>Here you can add a new task</h2>
-    <div class="mt-4" v-if="$store.state.tasks.mode !== 'new'">
+    <h2>New task</h2>
+    <div class="mt-2" v-if="$store.state.tasks.mode !== 'new'">
       <button @click="$store.commit('tasks/setMode', 'new')" class="btn btn-primary">Add task</button>
     </div>
     <div class="w-100" v-if="$store.state.tasks.mode === 'new'">
