@@ -1,8 +1,8 @@
 <template>
-  <div class="task-list-container">
+  <div class="task-list-container my-5">
     <h3>{{ title }}</h3>
     <div v-for="task in tasks">
-      <Task class="my-3" @toggleComplete="completeTask" :task="task"/>
+      <Task class="my-3" @editTask="editTask" @delete="deleteTask" @toggleComplete="completeTask" :editing="editing" :task="task"/>
     </div>
   </div>
 </template>
@@ -26,6 +26,7 @@ export default {
   },
   data() {
     return {
+      editing: false,
     }
   },
   methods: {
@@ -34,6 +35,21 @@ export default {
       await this.$axios.$post('http://localhost/api/done', {id: id} )
         .then(function (response) {
           console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    editTask (task ) {
+      this.editing = !this.editing;
+      this.$store.commit('tasks/editTask', task);
+    },
+    async deleteTask(task) {
+      this.$store.commit('tasks/removeTask', task.id)
+      this.$emit('taskDeleted', 'deleted')
+      await this.$axios.$post('http://localhost/api/delete', {id: task.id} )
+        .then(function (response) {
+          this.$emit('taskDeleted', 'deleted')
         })
         .catch(function (error) {
           console.log(error);

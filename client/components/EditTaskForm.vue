@@ -13,6 +13,7 @@
           placeholder="Enter task title"
           required
         ></b-form-input>
+        <span class="task-input-error">{{errors.title.value}}</span>
       </b-form-group>
 
       <b-form-group id="input-group-2" label="Your Description:" label-for="input-description">
@@ -23,6 +24,7 @@
           rows="3"
           max-rows="6"
         ></b-form-textarea>
+        <span class="task-input-error">{{errors.description.value}}</span>
       </b-form-group>
 
       <b-form-group id="input-group-3" label="Thumbnail:" label-for="input-3">
@@ -32,11 +34,16 @@
           placeholder="Choose a file or drop it here..."
           drop-placeholder="Drop file here..."
         ></b-form-file>
-        <div class="mt-3">Selected file: {{ form.file ? form.file.name : '' }}</div>
+        <span class="task-input-error">{{errors.file.value}}</span>
+        <div class="mt-3">
+          <nuxt-img :src="imgPreUrl + task.thumbnail" width="300" height="169"/>
+        </div>
+
+        <div class="mt-3">Current thumbnail: {{ form.file ? form.file : '' }}</div>
       </b-form-group>
-      {{ task }}
       <b-button type="submit" variant="primary">Submit</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
+      <b-button @click="$emit('cancel')" variant="dark">Cancel</b-button>
     </b-form>
     <b-card class="mt-3" header="Form Data Result">
       <pre class="m-0">{{ form }}</pre>
@@ -45,37 +52,77 @@
 </template>
 
 <style lang="scss" scoped>
-
+.task-input-error {
+  color: red;
+}
 </style>
 
 <script>
 export default {
   name: 'TaskForm',
-  props: ['task', 'editing'
-  ],
+  props: {
+    task: {
+      type: Object
+    },
+    editing: {
+      type: Boolean,
+    }
+  },
   data() {
     return {
       form: {
-        title: '',
-        description: '',
-        file: null,
+        title: this.task.title ? this.task.title : '',
+        description: this.task.description ? this.task.description : '',
+        file: this.task.thumbnail ? this.task.thumbnail : null,
+        id: this.task.id ? this.task.id : null,
       },
-      show: true
+      errors: {
+        title: {
+          value: '',
+        },
+        description: {
+          value: ''
+        },
+        file: {
+          value: ''
+        }
+      },
+      show: true,
+      imgPreUrl: 'http://localhost/storage/images/'
     }
   },
   methods: {
     onSubmit(event) {
       event.preventDefault()
 
-      console.log(this.form.title)
+      if(!this.validation().length > 0 ) {
+        let formData = {
+          title: this.form.title,
+          description: this.form.description,
+          file: this.form.file,
+          id: this.form.id
+        }
 
-      let formData = {
-        title: this.form.title,
-        description: this.form.description,
-        file: this.form.file
+        this.$emit('sendFormData', formData)
+        }
+
+    },
+    validation() {
+      let errors = [];
+      if (this.form.title.length < 5) {
+        this.errors.title.value = 'Please use a title of 5 or more characters';
+        errors.push(this.errors.title)
+      }
+      if (this.form.description.length < 5 ) {
+        this.errors.description.value = 'Please use a description of 5 or more characters';
+        errors.push(this.errors.description)
+      }
+      if(!this.form.file) {
+        this.errors.file.value = 'You forgot a thumbnail';
+        errors.push(this.errors.file)
       }
 
-      this.$emit('addTask', formData)
+      return errors
     },
     onReset(event) {
       event.preventDefault()

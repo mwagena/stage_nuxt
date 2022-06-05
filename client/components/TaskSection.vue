@@ -1,9 +1,15 @@
 <template>
   <div class="task-section-container">
+
+    <TaskAlert ref="taskAlert" :mode="alertMode" />
+
     <div class="my-3">
-      <NewTask/>
+      <NewTask @taskAdded="showAlert"/>
     </div>
-   <TaskList title="All tasks" :tasks=allTasks />
+    <div v-if="$store.state.tasks.mode === 'edit'" v-for="task in $store.state.tasks.edit">
+      <EditTask @taskEdited="showAlert" :task="task" />
+    </div>
+   <TaskList @taskDeleted="showAlert" title="All tasks" :tasks=allTasks />
     <TaskList title="Completed tasks" :tasks=completedTasks />
   </div>
 </template>
@@ -19,7 +25,8 @@ export default {
   name: 'TaskSection',
   data() {
     return {
-      tasks: []
+      tasks: [],
+      alertMode: ''
     }
   },
   async fetch() {
@@ -37,6 +44,12 @@ export default {
     allTasks() {
       return this.$store.getters["tasks/getAllTasks"]
     },
+  },
+  methods: {
+    showAlert(mode) {
+      this.alertMode = mode
+      this.$refs.taskAlert.showAlert();
+    }
   }
 }
 </script>
