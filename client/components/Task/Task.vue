@@ -5,7 +5,7 @@
       <div class="px-4 task-title">
         <strong :style="task.done ? 'text-decoration: line-through;' : '' ">{{ task.title }}</strong>
       </div>
-      <button @click="toggleMoreInfo" class="btn btn-primary">Show more info</button>
+      <button @click="toggleMoreInfo" class="btn btn-primary">{{ showMore ? 'Show less info' : 'Show more info' }}</button>
     </div>
     <div v-if="showMore" class="d-flex align-items-center justify-content-between py-3">
       <nuxt-img :src="imgPreUrl + task.thumbnail" width="300" height="169"/>
@@ -39,15 +39,13 @@ export default {
     return {
       showMore: false,
       editing: false,
-      imgPreUrl: 'http://localhost/storage/images/'
+      imgPreUrl: process.env.IMG_URL
     }
   },
   methods: {
     alertMe() {
       if (confirm("Are you sure you want to delete this task?")) {
         this.$emit('delete', this.task)
-      } else {
-        console.log('nope')
       }
 
     },
