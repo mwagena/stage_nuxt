@@ -14,52 +14,27 @@ class TaskController
     public function create(Request $request)
     {
         $request->validate([
-           'title' => 'required',
-           'description' => 'required',
+           'title' => 'required|min:5|max:100',
+           'description' => 'required|min:5|max:250',
            'file' => 'required',
             'thumbnail' => 'required'
         ]);
 
         $task = new Task;
 
-        $task->title = $request->title;
-        $task->description = $request->description;
-
-        if($request->file) {
-            $imgUrl = Storage::disk('local')->put('/public/images', $request->file);
-            $imgName = basename($imgUrl);
-            $task->thumbnail = $imgName;
-        }
-
-        $task->save();
-
-        return response($task, 200)
-            ->header('Content-type', 'application/json');
+        return $this->save($request, $task);
     }
 
     public function edit(Request $request)
     {
 
         $request->validate([
-            'title' => 'required',
-            'description' => 'required',
+            'title' => 'required|min:5|max:100',
+            'description' => 'required|min:5|max:250',
         ]);
         $task = Task::find($request->id);
 
-        $task->title = $request->title;
-        $task->description = $request->description;
-
-        if($request->file) {
-            $imgUrl = Storage::disk('local')->put('/public/images', $request->file);
-            $imgName = basename($imgUrl);
-            $task->thumbnail = $imgName;
-        }
-
-
-        $task->save();
-
-        return response($task, 200)
-            ->header('Content-type', 'application/json');
+        return $this->save($request, $task);
     }
 
     public function getAll(Request $request)
@@ -86,6 +61,28 @@ class TaskController
         $task->done = !$task->done;
         $task->save();
         return response('success', 200)
+            ->header('Content-type', 'application/json');
+    }
+
+    /**
+     * @param Request $request
+     * @param $task
+     * @return Application|ResponseFactory|Response
+     */
+    public function save(Request $request, $task): ResponseFactory|Application|Response
+    {
+        $task->title = $request->title;
+        $task->description = $request->description;
+
+        if ($request->file) {
+            $imgUrl = Storage::disk('local')->put('/public/images', $request->file);
+            $imgName = basename($imgUrl);
+            $task->thumbnail = $imgName;
+        }
+
+        $task->save();
+
+        return response($task, 200)
             ->header('Content-type', 'application/json');
     }
 

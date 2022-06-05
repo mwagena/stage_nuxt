@@ -46,7 +46,7 @@ export default {
 
       if (data.file || data.file !== null) {
 
-        if(data.file.name !== this.task.thumbnail && data.file && data.file !== this.task.thumbnail) {
+        if(data.file.name !== this.task.thumbnail && data.file && data.fileName !== this.task.thumbnail) {
           formData.append('file', data.file)
           formData.append('thumbnail', data.file.name)
         }

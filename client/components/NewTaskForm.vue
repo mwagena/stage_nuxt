@@ -127,8 +127,16 @@ export default {
           this.errors.title.value = 'Please use a title of 5 or more characters';
           errors.push(this.errors.title)
         }
+      if (this.form.title.length > 100) {
+        this.errors.title.value = 'Please use a title of less than 100 characters';
+        errors.push(this.errors.title)
+      }
       if (this.form.description.length < 5 ) {
         this.errors.description.value = 'Please use a description of 5 or more characters';
+        errors.push(this.errors.description)
+      }
+      if (this.form.description.length > 250 ) {
+        this.errors.description.value = 'Please use a description of less than 250 characters';
         errors.push(this.errors.description)
       }
       if(!this.form.file) {
