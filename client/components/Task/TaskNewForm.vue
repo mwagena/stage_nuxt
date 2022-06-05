@@ -45,9 +45,6 @@
       <b-button type="reset" variant="danger">Reset</b-button>
       <b-button @click="$emit('cancel')" variant="dark">Cancel</b-button>
     </b-form>
-    <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ form }}</pre>
-    </b-card>
   </div>
 </template>
 
@@ -60,7 +57,7 @@
 <script>
 
 export default {
-  name: 'TaskForm',
+  name: 'TaskNewForm',
   props: {
     task: {
       type: Object
@@ -89,7 +86,7 @@ export default {
         }
       },
       show: true,
-      imgPreUrl: 'http://localhost/storage/images/'
+      imgPreUrl: process.env.IMG_URL
     }
   },
 

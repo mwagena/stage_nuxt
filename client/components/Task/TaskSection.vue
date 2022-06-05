@@ -4,10 +4,10 @@
     <TaskAlert ref="taskAlert" :mode="alertMode" />
 
     <div class="my-3">
-      <NewTask @taskAdded="showAlert"/>
+      <TaskNew @taskAdded="showAlert"/>
     </div>
     <div v-if="$store.state.tasks.mode === 'edit'" v-for="task in $store.state.tasks.edit">
-      <EditTask @taskEdited="showAlert" :task="task" />
+      <TaskEdit @taskEdited="showAlert" :task="task" />
     </div>
    <TaskList @taskDeleted="showAlert" title="All tasks" :tasks=allTasks />
     <TaskList title="Completed tasks" :tasks=completedTasks />
@@ -53,4 +53,4 @@ export default {
   }
 }
 </script>
-<!--this.$store.commit('tasks/addTasks', this.res.json())-->
+<!--this.$store.commit('Task/addTasks', this.res.json())-->

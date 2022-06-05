@@ -32,9 +32,8 @@ export default {
   methods: {
     async completeTask (id) {
       this.$store.commit('tasks/setTaskDone', id)
-      await this.$axios.$post('http://localhost/api/done', {id: id} )
+      await this.$axios.$post(`${process.env.BASE_URL}/done`, {id: id} )
         .then(function (response) {
-          console.log(response);
         })
         .catch(function (error) {
           console.log(error);
@@ -47,9 +46,9 @@ export default {
     async deleteTask(task) {
       this.$store.commit('tasks/removeTask', task.id)
       this.$emit('taskDeleted', 'deleted')
-      await this.$axios.$post('http://localhost/api/delete', {id: task.id} )
+      await this.$axios.$post(`${process.env.BASE_URL}/delete`, {id: task.id} )
         .then(function (response) {
-          this.$emit('taskDeleted', 'deleted')
+
         })
         .catch(function (error) {
           console.log(error);

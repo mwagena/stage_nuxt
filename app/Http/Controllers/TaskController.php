@@ -27,12 +27,15 @@ class TaskController
 
     public function edit(Request $request)
     {
-
         $request->validate([
             'title' => 'required|min:5|max:100',
             'description' => 'required|min:5|max:250',
         ]);
         $task = Task::find($request->id);
+
+        if($request->file) {
+            Task::deleteImage($task->thumbnail);
+        }
 
         return $this->save($request, $task);
     }
@@ -47,9 +50,13 @@ class TaskController
 
     public static function delete(Request $request)
     {
+
         $task = Task::find($request->id);
 
+        Task::deleteImage($task->thumbnail);
+
         $task->delete();
+
         return response('success', 200)
             ->header('Content-type', 'application/json');
     }
@@ -75,6 +82,7 @@ class TaskController
         $task->description = $request->description;
 
         if ($request->file) {
+
             $imgUrl = Storage::disk('local')->put('/public/images', $request->file);
             $imgName = basename($imgUrl);
             $task->thumbnail = $imgName;
@@ -85,6 +93,5 @@ class TaskController
         return response($task, 200)
             ->header('Content-type', 'application/json');
     }
-
 
 }

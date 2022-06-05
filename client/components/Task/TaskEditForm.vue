@@ -43,11 +43,8 @@
       </b-form-group>
       <b-button type="submit" variant="primary">Submit</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
-      <b-button @click="$emit('cancel')" variant="dark">Cancel</b-button>
+      <b-button @click="$store.commit('tasks/setMode', 'default')" variant="dark">Cancel</b-button>
     </b-form>
-    <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ form }}</pre>
-    </b-card>
   </div>
 </template>
 
@@ -59,7 +56,7 @@
 
 <script>
 export default {
-  name: 'TaskForm',
+  name: 'TaskEditForm',
   props: {
     task: {
       type: Object
@@ -89,7 +86,7 @@ export default {
         }
       },
       show: true,
-      imgPreUrl: 'http://localhost/storage/images/'
+      imgPreUrl: process.env.IMG_URL
     }
   },
   methods: {
@@ -132,11 +129,11 @@ export default {
     },
     onReset(event) {
       event.preventDefault()
-      // Reset our form values
-      this.form.title = ''
-      this.form.description = ''
+      // Reset form values
+      this.form.title = this.task.title ? this.task.title : ''
+      this.form.description = this.task.description ? this.task.description : ''
       this.form.file = null
-      // Trick to reset/clear native browser form validation state
+
       this.show = false
       this.$nextTick(() => {
         this.show = true
